@@ -55,7 +55,7 @@ do
   while [ $pass == false ]
   do
     echo -e "\n" ; lsblk
-    echo -e "\n\n\nWhere do you want to install Athena Linux?\nType in SSD/hard disk device name:\n\n(e.g. '/dev/sda' or '/dev/sdb' etc...)\n\n\n>>>"
+    echo -e "\n\n\nWhere do you want to install OS?\nType in SSD/hard disk device name:\n\n(e.g. '/dev/sda' or '/dev/sdb' etc...)\n\n\n>>>"
     read ssd
 
     length=${#ssd}

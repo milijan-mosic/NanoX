@@ -1,8 +1,8 @@
-Nano X
+# Nano X
 
 ## Download ISO
 
-Get the latest ISO file from ArchLinux official website here -> https://archlinux.org/download/
+Get the latest ISO file from ArchLinux official website here -> https://archlinux.org/download
 
 Make a bootable USB with your favorite program.
 
@@ -21,7 +21,7 @@ bash NanoX/base/machine.sh
 ## After installation script enters OS (installation will stop, you'll see)
 
 ```sh
-bash Athena-Linux/base/ghost.sh
+bash NanoX/base/ghost.sh
 ```
 
 ## Finish installation
