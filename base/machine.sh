@@ -274,6 +274,8 @@ reflector --latest 32 --sort rate --save /etc/pacman.d/mirrorlist
 ################
 
 
+boot_n="1"
+
 swap_n="2"
 swap_type="8200"
 
@@ -289,17 +291,15 @@ sgdisk -p $ssd
 
 if [ $uefi == 1 ]
 then
-  boot_n="1"
   boot_size="+512M"
   boot_type="EF00"
 
   sgdisk -n $boot_n:0G:$boot_size -t $boot_n:$boot_type -g $ssd
 else
-  bios_boot_n="1"
   bios_boot_size="+1M"
   bios_boot_type="EF02"
 
-  sgdisk -n $bios_boot_n:0:$bios_boot_size -t $bios_boot_n:$bios_boot_type -g $ssd
+  sgdisk -n $boot_n:0G:$bios_boot_size -t $boot_n:$bios_boot_type -g $ssd
 fi
 
 sgdisk -n $swap_n:0G:$SWAP_size -t $swap_n:$swap_type -g $ssd
