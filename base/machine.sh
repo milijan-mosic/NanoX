@@ -391,9 +391,9 @@ temp=""
 uefi_package="efibootmgr"
 
 essential="base base-devel linux linux-firmware util-linux grub archlinux-keyring" # linux-hardened
-desktop_server="qt5-wayland qt6-wayland wayland-utils xorg-wayland"
+desktop_server="qt5-wayland qt6-wayland wayland-utils xorg-xwayland"
 
-cog_wheels="nvim tmux mesa sudo btrfs-progs" # libva-mesa-driver mesa-vdpau???
+cog_wheels="neovim tmux mesa sudo btrfs-progs" # libva-mesa-driver mesa-vdpau???
 internet_drivers="broadcom-wl networkmanager reflector network-manager-applet wireless_tools wpa_supplicant iw iwd wget git ca-certificates libsecret"
 
 cpu_amd="amd-ucode"
