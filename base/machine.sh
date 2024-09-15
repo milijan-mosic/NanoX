@@ -264,7 +264,7 @@ done
 #########
 
 
-reflector --latest 32 --sort rate --save /etc/pacman.d/mirrorlist
+# reflector --latest 32 --sort rate --save /etc/pacman.d/mirrorlist
 
 
 
@@ -274,37 +274,58 @@ reflector --latest 32 --sort rate --save /etc/pacman.d/mirrorlist
 ################
 
 
-boot_n="1"
+# OLD WAY
+# boot_n="1"
 
-swap_n="2"
-swap_type="8200"
+# swap_n="2"
+# swap_type="8200"
 
-root_n="3"
-root_type="8304"
+# root_n="3"
+# root_type="8304"
 
-home_n="4"
-home_type="8302"
+# home_n="4"
+# home_type="8302"
 
-sgdisk -Z $ssd
-sgdisk -o $ssd
-sgdisk -p $ssd
+# sgdisk -Z $ssd
+# sgdisk -o $ssd
+# sgdisk -p $ssd
+
+# if [ $uefi == 1 ]
+# then
+#   boot_size="+512M"
+#   boot_type="EF00"
+
+#   sgdisk -n $boot_n:0G:$boot_size -t $boot_n:$boot_type -g $ssd
+# else
+#   bios_boot_size="+1M"
+#   bios_boot_type="EF02"
+
+#   sgdisk -n $boot_n:0G:$bios_boot_size -t $boot_n:$bios_boot_type -g $ssd
+# fi
+
+# sgdisk -n $swap_n:0G:$SWAP_size -t $swap_n:$swap_type -g $ssd
+# sgdisk -n $root_n:0G:$root_size -t $root_n:$root_type -g $ssd
+# sgdisk -n $home_n:0G -t $home_n:$home_type -g $ssd
+
+
+sudo parted $ssd mklabel gpt
 
 if [ $uefi == 1 ]
 then
-  boot_size="+512M"
-  boot_type="EF00"
-
-  sgdisk -n $boot_n:0G:$boot_size -t $boot_n:$boot_type -g $ssd
+  sudo parted $ssd mkpart primary fat32 1MiB 513MiB
+  sudo parted $ssd set 1 esp on
 else
-  bios_boot_size="+1M"
-  bios_boot_type="EF02"
-
-  sgdisk -n $boot_n:0G:$bios_boot_size -t $boot_n:$bios_boot_type -g $ssd
+  sudo parted $ssd mkpart primary 1MiB 2MiB
+  sudo parted $ssd set 1 bios_grub on
 fi
 
-sgdisk -n $swap_n:0G:$SWAP_size -t $swap_n:$swap_type -g $ssd
-sgdisk -n $root_n:0G:$root_size -t $root_n:$root_type -g $ssd
-sgdisk -n $home_n:0G -t $home_n:$home_type -g $ssd
+sudo parted $ssd mkpart primary linux-swap 513MiB $(($RAM_size+513))MiB
+
+sudo parted $ssd mkpart primary ext4 $(($RAM_size+513))MiB $(($RAM_size+513+$root_size))MiB
+
+sudo parted $ssd mkpart primary ext4 $(($RAM_size+513+$root_size))MiB 100%
+
+sudo parted $ssd print
 
 
 
