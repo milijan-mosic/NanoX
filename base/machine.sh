@@ -38,8 +38,8 @@ root_password="12345678"
 username="w1ndw4lk"
 user_password="12345678"
 
-root_size="+32G"
-SWAP_size="+8192M"
+root_size="32768"
+SWAP_size="8192"
 
 
 
@@ -308,24 +308,24 @@ done
 # sgdisk -n $home_n:0G -t $home_n:$home_type -g $ssd
 
 
-sudo parted $ssd mklabel gpt
+sudo parted -s $ssd mklabel gpt
 
 if [ $uefi == 1 ]
 then
-  sudo parted $ssd mkpart primary fat32 1MiB 513MiB
-  sudo parted $ssd set 1 esp on
+  sudo parted -s $ssd mkpart primary fat32 1MiB 513MiB
+  sudo parted -s $ssd set 1 esp on
 else
-  sudo parted $ssd mkpart primary 1MiB 2MiB
-  sudo parted $ssd set 1 bios_grub on
+  sudo parted -s $ssd mkpart primary 1MiB 2MiB
+  sudo parted -s $ssd set 1 bios_grub on
 fi
 
-sudo parted $ssd mkpart primary linux-swap 513MiB $(($RAM_size+513))MiB
+sudo parted -s $ssd mkpart primary linux-swap 513MiB $(($SWAP_size+513))MiB
 
-sudo parted $ssd mkpart primary ext4 $(($RAM_size+513))MiB $(($RAM_size+513+$root_size))MiB
+sudo parted -s $ssd mkpart primary ext4 $(($SWAP_size+513))MiB $(($SWAP_size+513+$root_size))MiB
 
-sudo parted $ssd mkpart primary ext4 $(($RAM_size+513+$root_size))MiB 100%
+sudo parted -s $ssd mkpart primary ext4 $(($SWAP_size+513+$root_size))MiB 100%
 
-sudo parted $ssd print
+sudo parted -s $ssd print
 
 
 
