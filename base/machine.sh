@@ -29,7 +29,7 @@ fi
 
 
 ssd="/dev/sda" # ssd="/dev/nvme0n1"  # pN...
-uefi=0
+uefi=1
 hostname="voidbox"
 cpu_choice=1
 gpu_choice=1
@@ -38,8 +38,8 @@ root_password="12345678"
 username="w1ndw4lk"
 user_password="12345678"
 
-root_size="+128G"
-SWAP_size="+32768M"
+root_size="+32G"
+SWAP_size="+8192M"
 
 
 
@@ -284,8 +284,8 @@ home_n="4"
 home_type="8302"
 
 sgdisk -Z $ssd
-sgdisk -p $ssd
 sgdisk -o $ssd
+sgdisk -p $ssd
 
 if [ $uefi == 1 ]
 then
@@ -302,7 +302,7 @@ else
   sgdisk -n $bios_boot_n:0:$bios_boot_size -t $bios_boot_n:$bios_boot_type -g $ssd
 fi
 
-sgdisk -n $swap_n:0G:$RAM_size -t $swap_n:$swap_type -g $ssd
+sgdisk -n $swap_n:0G:$SWAP_size -t $swap_n:$swap_type -g $ssd
 sgdisk -n $root_n:0G:$root_size -t $root_n:$root_type -g $ssd
 sgdisk -n $home_n:0G -t $home_n:$home_type -g $ssd
 
