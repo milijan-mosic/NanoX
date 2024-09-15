@@ -28,7 +28,7 @@ then
 fi
 
 
-ssd="/dev/nvme0n1"  # pN...
+ssd="/dev/sda" # ssd="/dev/nvme0n1"  # pN...
 uefi=0
 hostname="voidbox"
 cpu_choice=1
@@ -38,8 +38,8 @@ root_password="12345678"
 username="w1ndw4lk"
 user_password="12345678"
 
-root_size=128
-SWAP_size=32768
+root_size="+128G"
+SWAP_size="+32768M"
 
 
 
@@ -275,11 +275,9 @@ reflector --latest 32 --sort rate --save /etc/pacman.d/mirrorlist
 
 
 swap_n="2"
-swap_size="+$RAM_sizeM"
 swap_type="8200"
 
 root_n="3"
-root_size="+$root_sizeG"
 root_type="8304"
 
 home_n="4"
@@ -304,7 +302,7 @@ else
   sgdisk -n $bios_boot_n:0:$bios_boot_size -t $bios_boot_n:$bios_boot_type -g $ssd
 fi
 
-sgdisk -n $swap_n:0G:$swap_size -t $swap_n:$swap_type -g $ssd
+sgdisk -n $swap_n:0G:$RAM_size -t $swap_n:$swap_type -g $ssd
 sgdisk -n $root_n:0G:$root_size -t $root_n:$root_type -g $ssd
 sgdisk -n $home_n:0G -t $home_n:$home_type -g $ssd
 
